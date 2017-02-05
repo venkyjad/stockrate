@@ -1,0 +1,11 @@
+cherrypy
+Jinja2
+Python
+BeautifulSoup4
+selenium
+mako
+redis
+scrapy
+requests
+argparse
+lxml

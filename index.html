@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Zerodha</title>
+  <link rel="icon" href="static/favicon.ico" type="image/x-icon"/>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+<style>
+ html,body{
+   background-color: #253138 !important;
+   font-family: 'Montserrat', sans-serif;
+   color:#e5e6e8;
+ }
+
+.card{
+padding-: 10px;
+margin: 10px;
+margin-left: 50px;
+background-color: #2f3e47 !important;
+border-radius: 15px;
+}
+hr.cust {
+  border-top: 1px solid #8c8b8b;
+	border-bottom: 1px solid #fff;
+}
+.zoom
+{
+    display:inline-block;
+    border:0;
+    position: relative;
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1);
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1);
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1);
+    transition: all 200ms ease-in;
+    transform: scale(1);
+
+}
+.zoom:hover
+{
+    box-shadow: 0px 0px 150px #000000;
+    z-index: 2;
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1.1);
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1.1);
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1.1);
+    transition: all 200ms ease-in;
+    transform: scale(1.1);
+}
+
+</style>
+
+<body>
+
+<div class="row">
+  % for item in  data:
+<div class="card col-md-5 col-md-offset-1 zoom">
+<center><h3><span class="label label-success">${item["symbol"]}</span></h3></center>
+<hr class="cust">
+  <center><br/>
+  <table width=300>
+    <tr>
+      <td>LTP</td>
+      <td>${item["ltp"]} </td>
+    </tr>
+    <tr>
+      <td>Change %</td>
+      <td>${item["change"]} </td>
+    </tr>
+    <tr>
+      <td>Traded</td>
+      <td>${item["traded"]} </td>
+    </tr>
+    <tr>
+      <td>Value</td>
+      <td>${item["value"]}</td>
+    </tr>
+    <tr>
+      <td>Open</td>
+      <td>${item["open"]}</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>${item["high"]} </td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>${item["low"]}</td>
+    </tr>
+    <tr>
+      <td>Previous Close</td>
+      <td>${item["prevclose"]}</td>
+    </tr>
+    <tr>
+      <td>Extension</td>
+      <td>${item["extntn"]} </td>
+    </tr>
+  </table><br/>
+</center>
+</div>
+% endfor
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</html>
