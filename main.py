@@ -1,9 +1,6 @@
 import os.path
 import cherrypy,time,threading,redis,ast,scrapy,json,requests,argparse
-from bs4 import BeautifulSoup
-from lxml import etree
 import urllib,time
-from selenium import webdriver
 from mako.template import Template
 from cherrypy.process.plugins import Monitor
 
@@ -25,24 +22,22 @@ def get_stock_rate():
     #This Thread Gets the Data Every 5minutes and Updates to Redis
     threading.Timer(300, get_stock_rate).start()
     r = redis.Redis("localhost")
-    browser = webdriver.PhantomJS()
-    browser.get('https://www.nseindia.com/live_market/dynaContent/live_analysis/top_gainers_losers.htm?cat=G')
-    soup = BeautifulSoup(browser.page_source, "html.parser")
-    table = soup.find('table', {'id': 'topGainers'})
+    url = 'https://www.nseindia.com/live_market/dynaContent/live_analysis/gainers/niftyGainers1.json'
+    re=requests.get(url)
+    js_data=json.loads(re.content)
     stockrate = []
-    for row in table.find_all('tr')[1:]:
+    for i in range(0,10):
         cdict = {}
-        col = row.find_all('td')
-        cdict['symbol'] = col[0].string.strip()
-        cdict['ltp'] = col[1].string.strip()
-        cdict['change'] = col[2].string.strip()
-        cdict['traded'] = col[3].string.strip()
-        cdict['value'] = col[4].string.strip()
-        cdict['open'] = col[5].string.strip()
-        cdict['high'] = col[6].string.strip()
-        cdict['low'] = col[7].string.strip()
-        cdict['prevclose'] = col[8].string.strip()
-        cdict['extntn'] = col[9].string.strip()
+        cdict['symbol'] = js_data["data"][i]["symbol"]
+        cdict['ltp'] = js_data["data"][i]["ltp"]
+        cdict['change'] = js_data["data"][i]["netPrice"]
+        cdict['traded'] = js_data["data"][i]["tradedQuantity"]
+        cdict['value'] = js_data["data"][i]["turnoverInLakhs"]
+        cdict['open'] = js_data["data"][i]["openPrice"]
+        cdict['high'] = js_data["data"][i]["highPrice"]
+        cdict['low'] = js_data["data"][i]["lowPrice"]
+        cdict['prevclose'] = js_data["data"][i]["previousPrice"]
+        cdict['extntn'] = js_data["data"][i]["lastCorpAnnouncementDate"]
         stockrate.append(cdict)
         r.lpush('stl',cdict)
     sr = r.lrange('stl',0,10)
